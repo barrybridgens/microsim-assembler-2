@@ -64,9 +64,38 @@ def parse_asm_file():
                     # print("-----------> ", hex(address))
                 # LDA_I Op Code
                 if (tokens[0] == "LDA_I"):
-                    print("----> LAD_I")
+                    print("----> LDA_I")
                     output.append(prepend_and_inc_address(1))
                     output.append(prepend_and_inc_address(process_number_string(tokens[1])))
+                # LDA_M Op Code
+                if (tokens[0] == "LDA_M"):
+                    print("----> LDA_M")
+                    output.append(prepend_and_inc_address(2))
+                    addr = process_number_string(labels[tokens[1]])
+                    print("------> Load Address:", hex(addr))
+                    output.append(prepend_and_inc_address(addr // 256))
+                    output.append(prepend_and_inc_address(addr % 256))
+                # STA Op Code
+                if (tokens[0] == "STA"):
+                    print("----> STA")
+                    output.append(prepend_and_inc_address(3))
+                    addr = process_number_string(labels[tokens[1]])
+                    print("------> Store Address:", hex(addr))
+                    output.append(prepend_and_inc_address(addr // 256))
+                    output.append(prepend_and_inc_address(addr % 256))
+                # ADD_I Op Code
+                if (tokens[0] == "ADD_I"):
+                    print("----> ADD_I")
+                    output.append(prepend_and_inc_address(4))
+                    output.append(prepend_and_inc_address(process_number_string(tokens[1])))
+                # ADD_M Op Code
+                if (tokens[0] == "ADD_M"):
+                    print("----> ADD_M")
+                    output.append(prepend_and_inc_address(5))
+                    addr = process_number_string(labels[tokens[1]])
+                    print("------> Add Address:", hex(addr))
+                    output.append(prepend_and_inc_address(addr // 256))
+                    output.append(prepend_and_inc_address(addr % 256))
                 # INC Op Code
                 if (tokens[0] == "INC"):
                     print("----> INC")
@@ -84,7 +113,7 @@ def parse_asm_file():
                     print("----> JMP")
                     output.append(prepend_and_inc_address(10))
                     addr = process_number_string(labels[tokens[1]])
-                    print("------> Jump Address:", addr)
+                    print("------> Jump Address:", hex(addr))
                     output.append(prepend_and_inc_address(addr // 256))
                     output.append(prepend_and_inc_address(addr % 256))
 

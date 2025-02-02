@@ -12,6 +12,9 @@ start:
 
 	LDA_M	var1
 	INC
+	ADD_I	0x05
+	ADD_M	var1
+	STA	var1
 	DEC
 	OUT
 	STA	var1
