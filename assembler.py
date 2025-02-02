@@ -17,6 +17,14 @@ def prepend_and_inc_address(d):
     address = address + 1
     return(ret)
 
+def write_obj_file():
+    global output
+    with open("/home/barry/software/projects/microsim-assembler-2/test.obj", "w") as file:
+        for addr in output:
+            out = str(addr[0]) + "    " + str(addr[1])
+            file.write(out)
+            file.write("\n")
+
 def parse_asm_file():
     global address
     with open("/home/barry/software/projects/microsim-assembler-2/test.asm") as file:
@@ -124,3 +132,4 @@ if __name__ == "__main__":
     print(labels)
     print("OUTPUT")
     print(output)
+    write_obj_file()
