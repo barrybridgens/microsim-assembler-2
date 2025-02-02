@@ -34,6 +34,16 @@ def parse_asm_file():
                     #print("----> ORG")
                     address = process_number_string(tokens[1])
                     # print("-----------> ", hex(address))
+                if (tokens[0] == "LDA_I"):
+                    address = address + 2
+                if (tokens[0] == "INC"):
+                    address = address + 1
+                if (tokens[0] == "DEC"):
+                    addres = address + 1
+                if (tokens[0] == "OUT"):
+                    address = address + 1
+                if (tokens[0] == "JMP"):
+                    address = address + 3
                 if (tokens[0][-1] == ":"):
                     # print("---------------------------> LABEL")
                     labels[tokens[0][:-1]] = hex(address)

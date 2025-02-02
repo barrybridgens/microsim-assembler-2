@@ -17,8 +17,9 @@ start:
 	STA	var1
 
 	LDA_I	4
+loop:	
 	DEC
-	BRNZ	0xFFFF
+	BRNZ	loop
 
-	JMP	start
+	HALT
 
