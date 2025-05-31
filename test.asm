@@ -1,14 +1,12 @@
 	# Test file for microsim-assembler
 
-	ORG 0x200
+	ORG 0x080
 var1:
 	
-	ORG 0x210
+	ORG 0x0100
 
 start:	
 	LDA_I	27
-
-	ORG 0x220
 
 	LDA_M	var1
 	INC

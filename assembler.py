@@ -39,23 +39,56 @@ def parse_asm_file():
                 tokens = line.strip().split()
                 # ORG Directive
                 if (tokens[0] == "ORG"):
-                    #print("----> ORG")
+                    print("----> ORG")
                     address = process_number_string(tokens[1])
-                    # print("-----------> ", hex(address))
+                    print("-----------> ", hex(address))
                 if (tokens[0] == "LDA_I"):
                     address = address + 2
+                if (tokens[0] == "LDA_M"):
+                    address = address + 3
+                if (tokens[0] == "STA"):
+                    address = address + 3
+                if (tokens[0] == "ADD_I"):
+                    address = address + 2
+                if (tokens[0] == "ADD_M"):
+                    address = address + 3
                 if (tokens[0] == "INC"):
                     address = address + 1
                 if (tokens[0] == "DEC"):
-                    addres = address + 1
+                    address = address + 1
+                if (tokens[0] == "BRNZ"):
+                    address = address + 3
                 if (tokens[0] == "OUT"):
                     address = address + 1
                 if (tokens[0] == "JMP"):
                     address = address + 3
+                if (tokens[0] == "JSR"):
+                    address = address + 3
+                if (tokens[0] == "RET"):
+                    address = address + 1
+                if (tokens[0] == "LDI_I"):
+                    address = address + 3
+                if (tokens[0] == "LDI_M"):
+                    address = address + 3
+                if (tokens[0] == "INCI"):
+                    address = address + 1
+                if (tokens[0] == "DECI"):
+                    address = address + 1
+                if (tokens[0] == "LDAI"):
+                    address = address + 1
+                if (tokens[0] == "LDAIO"):
+                    address = address + 2
+                if (tokens[0] == "STAI"):
+                    address = address + 1
+                if (tokens[0] == "STAIO"):
+                    address = address + 2
                 if (tokens[0][-1] == ":"):
-                    # print("---------------------------> LABEL")
+                    print("---------------------------> LABEL")
                     labels[tokens[0][:-1]] = hex(address)
+                    print("---------------------------> ", hex(address))
 
+        print(labels)    
+            
         # Assembler Pass
         file.seek(0)
         for line in file:
@@ -112,6 +145,13 @@ def parse_asm_file():
                 if (tokens[0] == "DEC"):
                     print("----> DEC")
                     output.append(prepend_and_inc_address(7))
+                # BRNZ Op Code
+                if (tokens[0] == "BRNZ"):
+                    print("----> BRNZ")
+                    output.append(prepend_and_inc_address(8))
+                    addr = process_number_string(labels[tokens[1]])
+                    output.append(prepend_and_inc_address(addr // 256))
+                    output.append(prepend_and_inc_address(addr % 256))
                 # OUT Op Code
                 if (tokens[0] == "OUT"):
                     print("----> OUT")
@@ -124,6 +164,10 @@ def parse_asm_file():
                     print("------> Jump Address:", hex(addr))
                     output.append(prepend_and_inc_address(addr // 256))
                     output.append(prepend_and_inc_address(addr % 256))
+                # HALT Op Code
+                if (tokens[0] == "HALT"):
+                    print("----> HALT")
+                    output.append(prepend_and_inc_address(255))
 
 if __name__ == "__main__":
     print('Microsim Assembler 2 - v0.1')
