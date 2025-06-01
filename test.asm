@@ -2,9 +2,9 @@
 
 	ORG 0x080
 var1:
+	VAR 1
 	
 	ORG 0x0100
-
 start:	
 	LDA_I	27
 
@@ -18,9 +18,15 @@ start:
 	STA	var1
 
 	LDA_I	4
+
+	LDI_I	hello
+
 loop:	
-	DEC
+	LDAI
+	OUT
+	INCI
 	BRNZ	loop
 
 	HALT
-
+hello:
+	.S Hello World

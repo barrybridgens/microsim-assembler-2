@@ -42,6 +42,10 @@ def parse_asm_file():
                     print("----> ORG")
                     address = process_number_string(tokens[1])
                     print("-----------> ", hex(address))
+                if (tokens[0] == "VAR"):
+                    print("----> VAR")
+                    size = process_number_string(tokens[1])
+                    address = address + size
                 if (tokens[0] == "LDA_I"):
                     address = address + 2
                 if (tokens[0] == "LDA_M"):
@@ -103,6 +107,17 @@ def parse_asm_file():
                     print("----> ORG")
                     address = process_number_string(tokens[1])
                     # print("-----------> ", hex(address))
+                # constant string directive
+                if (tokens[0] == ".S"):
+                    print("Tokens size = ", len(tokens))
+                    print("String = ", tokens[1])
+                    for tok in tokens:
+                        if (tok != ".S"):
+                            for c in tok:
+                                print(c, " -> ", ord(c))
+                                output.append(prepend_and_inc_address(ord(c)))
+                            output.append(prepend_and_inc_address(ord(' ')))
+                    output.append(prepend_and_inc_address(0))
                 # LDA_I Op Code
                 if (tokens[0] == "LDA_I"):
                     print("----> LDA_I")
@@ -164,6 +179,65 @@ def parse_asm_file():
                     print("------> Jump Address:", hex(addr))
                     output.append(prepend_and_inc_address(addr // 256))
                     output.append(prepend_and_inc_address(addr % 256))
+                # JSR Op Code
+                if (tokens[0] == "JSR"):
+                    print("----> JSR")
+                    output.append(prepend_and_inc_address(11))
+                    addr = process_number_string(labels[tokens[1]])
+                    print("------> Jump Subroutine Address:", hex(addr))
+                    output.append(prepend_and_inc_address(addr // 256))
+                    output.append(prepend_and_inc_address(addr % 256))
+                # RET Op Code
+                if (tokens[0] == "RET"):
+                    print("----> RET")
+                    output.append(prepend_and_inc_address(12))
+                # LDI_I Op Code
+                if (tokens[0] == "LDI_I"):
+                    print("----> LDI_I")
+                    output.append(prepend_and_inc_address(13))
+                    addr = process_number_string(labels[tokens[1]])
+                    print("------> Index Address:", hex(addr))
+                    output.append(prepend_and_inc_address(addr // 256))
+                    output.append(prepend_and_inc_address(addr % 256))
+                # LDI_M Op Code
+                if (tokens[0] == "LDI_M"):
+                    print("----> LDI_M")
+                    output.append(prepend_and_inc_address(14))
+                    addr = process_number_string(labels[tokens[1]])
+                    print("------> Index Address:", hex(addr))
+                    output.append(prepend_and_inc_address(addr // 256))
+                    output.append(prepend_and_inc_address(addr % 256))
+                # INCI
+                if (tokens[0] == "INCI"):
+                    print("----> INCI")
+                    output.append(prepend_and_inc_address(15))
+                # DECI
+                if (tokens[0] == "DECI"):
+                    print("----> DECI")
+                    output.append(prepend_and_inc_address(16))
+                # LDAI
+                if (tokens[0] == "LDAI"):
+                    print("----> LDAI")
+                    output.append(prepend_and_inc_address(17))
+                # LDAIO
+                if (tokens[0] == "LDAIO"):
+                    print("----> LDAIO")
+                    output.append(prepend_and_inc_address(18))
+                    data = process_number_string(labels[tokens[1]])
+                    print("------> Data:", hex(addr))
+                    output.append(prepend_and_inc_address(data))
+                # STAI
+                if (tokens[0] == "STAI"):
+                    print("----> STAI")
+                    output.append(prepend_and_inc_address(19))
+                # STAIO
+                if (tokens[0] == "STAIO"):
+                    print("----> STAIO")
+                    output.append(prepend_and_inc_address(18))
+                    data = process_number_string(labels[tokens[1]])
+                    print("------> Data:", hex(addr))
+                    output.append(prepend_and_inc_address(data))
+
                 # HALT Op Code
                 if (tokens[0] == "HALT"):
                     print("----> HALT")
