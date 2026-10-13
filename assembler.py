@@ -1,5 +1,10 @@
 # Microsim Assembler 2
 
+import sys
+
+input_fn = "/home/barry/software/projects/microsim-assembler-2/test.asm"
+obj_fn = "/home/barry/software/projects/microsim-assembler-2/test.obj"
+
 address = 0x100
 labels = {}
 output = []
@@ -19,7 +24,7 @@ def prepend_and_inc_address(d):
 
 def write_obj_file():
     global output
-    with open("/home/barry/software/projects/microsim-assembler-2/test.obj", "w") as file:
+    with open(obj_fn, "w") as file:
         for addr in output:
             out = str(addr[0]) + "    " + str(addr[1])
             file.write(out)
@@ -27,7 +32,7 @@ def write_obj_file():
 
 def parse_asm_file():
     global address
-    with open("/home/barry/software/projects/microsim-assembler-2/test.asm") as file:
+    with open(input_fn) as file:
         # Lables Pass
         for line in file:
             # print("Lables Pass")
@@ -245,6 +250,10 @@ def parse_asm_file():
 
 if __name__ == "__main__":
     print('Microsim Assembler 2 - v0.1')
+    # Get input filename from command line (if present)
+    if len(sys.argv) > 1:
+        input_fn = sys.argv[1]
+        obj_fn = input_fn[:input_fn.index('.')] + '.obj'
     parse_asm_file()
     print("LABELS")
     print(labels)
